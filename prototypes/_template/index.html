@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>原型模板 · 粤省事</title>
+<style>
+  /* ============ 复制本目录做新原型时，先改这几行 ============ */
+  :root{
+    --brand:#2f6fed;        /* 主题色 */
+    --bg:#eef0f4;           /* 手机外的底色 */
+    --page:#f5f6f8;         /* 页面内容底色 */
+    --card:#ffffff;
+    --text:#15181c;
+    --muted:#7a828e;
+    --line:#e8ebef;
+  }
+  /* ====================================================== */
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+    display:flex;justify-content:center;align-items:flex-start;
+    min-height:100vh;padding:28px 16px;
+  }
+  .phone{
+    width:390px;max-width:100%;background:var(--page);border-radius:22px;overflow:hidden;
+    box-shadow:0 18px 50px rgba(20,30,60,.14);border:1px solid rgba(0,0,0,.05);
+    display:flex;flex-direction:column;min-height:760px;
+  }
+  .statusbar{
+    height:34px;flex:none;display:flex;align-items:center;justify-content:space-between;
+    padding:0 20px;font-size:12px;font-weight:600;color:var(--text);background:var(--card);
+  }
+  .navbar{
+    flex:none;background:var(--card);padding:6px 16px 12px;
+    display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);
+  }
+  .back{color:var(--brand);font-size:14px;flex:none}
+  .navbar h1{
+    font-size:16.5px;font-weight:600;margin:0;flex:1;text-align:center;
+    margin-right:calc(14px + 0.5em); /* 视觉居中补偿 */
+  }
+  .body{flex:1;padding:16px}
+  .sec{
+    background:var(--card);border-radius:14px;overflow:hidden;
+    border:1px solid var(--line);margin-bottom:14px;
+  }
+  .sec h2{font-size:13px;font-weight:600;color:var(--muted);margin:16px 16px 8px}
+  .row{display:flex;align-items:center;gap:12px;padding:14px 16px;border-top:1px solid var(--line)}
+  .row:first-of-type{border-top:0}
+  .ic{
+    width:32px;height:32px;flex:none;border-radius:9px;background:#eef3ff;color:var(--brand);
+    display:grid;place-items:center;font-size:15px;
+  }
+  .txt{flex:1;min-width:0}
+  .txt b{display:block;font-size:14.5px;font-weight:550}
+  .txt small{color:var(--muted);font-size:12.5px}
+  .arrow{color:#c3c9d2;flex:none;font-size:16px}
+  .cta{
+    display:block;width:100%;margin-top:8px;padding:14px;border:0;border-radius:12px;
+    background:var(--brand);color:#fff;font-size:16px;font-weight:600;font-family:inherit;
+  }
+  .note{
+    margin-top:18px;padding:13px 15px;border:1px dashed #c9d4e6;border-radius:12px;
+    background:#f7faff;color:#5a6b85;font-size:12.5px;line-height:1.7;
+  }
+  .note b{color:#33465f}
+  code{background:#e9eef7;border-radius:4px;padding:1px 5px;font-size:12px}
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><span>●●● ⏻</span></div>
+
+  <div class="navbar">
+    <span class="back">‹ 返回</span>
+    <h1>页面标题</h1>
+  </div>
+
+  <div class="body" id="content">
+    <div class="sec">
+      <h2>分组标题</h2>
+      <div class="row">
+        <div class="ic">◉</div>
+        <div class="txt"><b>条目名称</b><small>这里是说明文字</small></div>
+        <div class="arrow">›</div>
+      </div>
+      <div class="row">
+        <div class="ic">◉</div>
+        <div class="txt"><b>条目名称</b><small>这里是说明文字</small></div>
+        <div class="arrow">›</div>
+      </div>
+    </div>
+
+    <button class="cta">主操作按钮</button>
+
+    <div class="note">
+      <b>这是模板占位内容。</b><br>
+      复制 <code>prototypes/_template/</code> 整个目录并重命名，然后改这一页的内容；改完记得回到仓库根的 <code>manifest.json</code> 登记一条。
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

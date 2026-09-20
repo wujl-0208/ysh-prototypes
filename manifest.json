@@ -1,0 +1,13 @@
+{
+  "updated": "2026-09-20",
+  "prototypes": [
+    {
+      "dir": "prototypes/_template",
+      "title": "原型模板",
+      "desc": "新建原型时复制这个目录，改完在 manifest.json 登记一条即可出现在总览页。",
+      "tags": ["起步用"],
+      "date": "2026-09-20",
+      "status": "template"
+    }
+  ]
+}
