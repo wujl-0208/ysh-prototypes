@@ -12,12 +12,10 @@
 ysh-prototypes/
 ├── index.html                  # 原型总览页（列表 + 入口）
 ├── manifest.json               # 原型清单，新增原型要在这里登记
-├── .nojekyll                   # 关闭 Jekyll，保证 _ 开头目录也能被正常访问
+├── .nojekyll                   # 关闭 Jekyll 构建，让文件原样发布
 └── prototypes/
-    ├── _template/              # 原型模板，新建时复制这个目录
-    │   └── index.html
-    └── <原型名>/               # 每个原型一个目录
-        └── index.html
+    └── <原型名>/               # 每个原型一个目录（英文小写 + 连字符）
+        └── index.html          # 该原型的入口页
 ```
 
 ## 在线访问
@@ -31,17 +29,19 @@ ysh-prototypes/
 
 ## 新增一个原型
 
-1. 复制 `prototypes/_template/`，重命名为原型名（**英文小写 + 连字符**，如 `smart-guide-v2`）
-2. 改目录里的 `index.html`
+已经做好的 HTML 直接放进来就行，不需要套模板：
+
+1. 在 `prototypes/` 下新建一个目录，命名用**英文小写 + 连字符**（如 `skin-config-trial`）
+2. 把做好的 HTML 放进去，**入口文件命名为 `index.html`**；如果页面带图片/字体等素材，一并放在同一目录（原型自包含，不跨目录引用）
 3. 在 `manifest.json` 的 `prototypes` 数组里加一条：
 
 ```json
 {
-  "dir": "prototypes/smart-guide-v2",
-  "title": "智能导办 v2",
-  "desc": "把原来的表单流程改成对话式引导",
-  "tags": ["流程", "v2"],
-  "date": "2026-09-20",
+  "dir": "prototypes/skin-config-trial",
+  "title": "运营后台 · 新建皮肤",
+  "desc": "一句话说明这个原型要解决什么",
+  "tags": ["运营后台", "表单"],
+  "date": "2026-09-21",
   "status": "review"
 }
 ```
@@ -59,8 +59,11 @@ ysh-prototypes/
 | `date` | 更新日期，`YYYY-MM-DD` |
 | `status` | `draft` 草稿 / `review` 待评审 / `final` 定稿 / `archived` 归档 |
 
+顶层还有一个 `updated` 字段，记最后一次更新的日期。
+
 ## 约定
 
+- **入口文件必须叫 `index.html`**：这样访问 `prototypes/<原型名>/` 就能直接打开，链接干净
 - 原型**自包含**：每个目录里放全自己的 HTML/CSS/JS/图片，不跨目录引用，单独打开也能跑
 - **不引外网依赖**：不用 CDN、不连外部接口，保证离线可看、Pages 也不会挂
 - 目录名和文件名不用中文，避免链接编码问题；**页面内容是中文没问题**
