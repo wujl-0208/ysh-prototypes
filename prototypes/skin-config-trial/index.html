@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>粤省事运营平台 · 新建皮肤</title>
+  <style>
+    :root {
+      --blue: #2f8cf4;
+      --blue-hover: #58a6f7;
+      --text: #303133;
+      --muted: #7d8793;
+      --line: #e6e9ed;
+      --canvas: #f5f7fa;
+      --danger: #f5222d;
+      --warning-bg: #fffbe6;
+      --warning-line: #ffe58f;
+      --warning-text: #8c6d1f;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; color: var(--text); background: var(--canvas); }
+    body { font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+
+    .page { min-width: 980px; min-height: 100vh; padding: 0 10px 86px; }
+    .breadcrumb { height: 48px; display: flex; align-items: center; gap: 10px; color: #7d8793; border-bottom: 1px solid var(--line); }
+    .breadcrumb strong { color: var(--text); font-weight: 400; }
+    .page-title { height: 72px; display: flex; align-items: center; gap: 14px; font-size: 20px; font-weight: 600; }
+    .back { width: 30px; height: 30px; border: 0; border-radius: 50%; background: #fff; box-shadow: 0 1px 5px rgba(0,0,0,.12); color: #7f8790; font-size: 22px; line-height: 28px; }
+
+    .panel { background: #fff; }
+    .top-tabs, .sub-tabs { display: flex; border-bottom: 1px solid var(--line); padding-left: 26px; }
+    .tab { height: 45px; min-width: 102px; padding: 0 18px; border: 0; background: transparent; color: #8a8f95; font-size: 15px; position: relative; }
+    .sub-tabs .tab { min-width: 96px; color: #3e4349; }
+    .tab.active { color: var(--blue); font-weight: 500; }
+    .tab.active::after { content: ""; position: absolute; left: 14px; right: 14px; bottom: -1px; height: 2px; background: var(--blue); }
+    .sub-tabs .tab.active::after { left: 10px; right: 10px; }
+
+    .main-section { min-height: 310px; padding: 26px 0 32px; }
+    .edition-base { padding-top: 24px; }
+    .sub-panel { margin-top: 16px; min-height: 350px; }
+    .sub-content { padding: 18px 0 32px; }
+
+    .form { width: 100%; }
+    .row { display: grid; grid-template-columns: minmax(270px, 40%) minmax(420px, 560px) 1fr; align-items: start; min-height: 62px; }
+    .label { text-align: right; padding: 9px 10px 0 0; white-space: nowrap; }
+    .required::before { content: "*"; color: var(--danger); margin-right: 5px; }
+    .control { min-width: 0; }
+    .hint { margin-top: 8px; color: #7e8894; }
+    .error { margin-top: 4px; color: var(--danger); display: none; }
+    .invalid .error { display: block; }
+    .invalid .text-input { border-color: var(--danger); }
+    .aside-note { padding: 8px 0 0 14px; color: #a0a7af; }
+
+    .text-input, .date-input { width: 100%; height: 34px; border: 1px solid #cfd5dd; border-radius: 0; padding: 0 12px; color: #333; outline: none; background: #fff; transition: .2s; }
+    .text-input::placeholder, .date-input::placeholder { color: #a9b0b8; }
+    .text-input:focus, .date-input:focus { border-color: var(--blue); box-shadow: 0 0 0 2px rgba(47,140,244,.08); }
+    input[type="number"] { appearance: textfield; }
+
+    .color-field { display: flex; gap: 16px; align-items: center; }
+    .color-field .text-input { flex: 1; }
+    .gradient-pair { display: grid; gap: 14px; }
+    .gradient-item { min-width: 0; display: flex; align-items: center; gap: 12px; }
+    .gradient-item .color-field { flex: 1; min-width: 0; }
+    .gradient-label { width: 50px; flex: 0 0 auto; color: #60666d; }
+    .color-dot { width: 36px; height: 36px; border: 1px solid #cfd5dd; border-radius: 50%; overflow: hidden; position: relative; background: #fff; flex: 0 0 auto; }
+    .color-dot input { position: absolute; inset: -10px; width: 56px; height: 56px; opacity: 0; cursor: pointer; }
+
+    .upload-wrap { display: inline-block; }
+    .upload { width: 90px; height: 90px; border: 1px dashed #c9ced6; background: #fff; color: #565d65; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 2px; position: relative; overflow: hidden; }
+    .upload:hover { border-color: var(--blue); color: var(--blue); }
+    .upload .plus { font-size: 22px; color: #7d858e; line-height: 1; }
+    .upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .upload img { width: 100%; height: 100%; object-fit: cover; display: none; }
+    .upload.has-image img { display: block; }
+    .upload.has-image .upload-copy { display: none; }
+    .upload-remove { display: none; width: 22px; height: 22px; padding: 0; border: 0; border-radius: 50%; background: rgba(0,0,0,.58); color: white; position: absolute; top: 4px; right: 4px; z-index: 3; }
+    .upload.has-image .upload-remove { display: block; }
+    .upload-error { color: var(--danger); margin-top: 4px; max-width: 360px; }
+    .upload-grid { display: flex; gap: 8px; flex-wrap: wrap; }
+    .upload-grid .upload { width: 90px; }
+
+    .choices { min-height: 34px; display: flex; align-items: center; flex-wrap: wrap; gap: 18px; }
+    .radio, .check { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+    .radio input, .check input { position: absolute; opacity: 0; }
+    .radio-mark { width: 16px; height: 16px; border: 1px solid #cbd1d8; border-radius: 50%; position: relative; background: #fff; }
+    .radio input:checked + .radio-mark { border-color: var(--blue); }
+    .radio input:checked + .radio-mark::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; background: var(--blue); }
+    .check-mark { width: 16px; height: 16px; border: 1px solid #cbd1d8; background: #fff; position: relative; }
+    .check input:checked + .check-mark { background: var(--blue); border-color: var(--blue); }
+    .check input:checked + .check-mark::after { content: ""; position: absolute; left: 4px; top: 1px; width: 5px; height: 9px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+
+    .scope-list { display: flex; gap: 8px; flex-wrap: wrap; }
+    .scope { height: 34px; min-width: 88px; padding: 0 15px; border: 1px solid #cfd5dd; background: #fff; color: #555; position: relative; }
+    .scope.selected { border-color: var(--blue); color: var(--blue); }
+    .scope.selected::before { content: ""; position: absolute; right: 0; bottom: 0; border-style: solid; border-width: 0 0 17px 17px; border-color: transparent transparent var(--blue) transparent; }
+    .scope.selected::after { content: "✓"; position: absolute; right: 1px; bottom: -2px; color: #fff; font-size: 11px; z-index: 1; }
+
+    .mode-diagram { max-width: 300px; padding-top: 2px; }
+    .mode-sample { min-width: 0; border: 1px solid #e0e5eb; padding: 10px; background: #fff; }
+    .mode-sample.active { border-color: var(--blue); box-shadow: 0 0 0 1px var(--blue); }
+    .mode-caption { color: #626a73; font-size: 13px; margin-bottom: 8px; }
+    .mode-surface { height: 166px; padding: 14px 11px; overflow: hidden; }
+    .mode-surface.dark { background: #2731d6; color: #fff; --mode-muted: #d2d7ff; --mode-border: rgba(255,255,255,.75); --mode-selected: #333c76; }
+    .mode-surface.light { background: #fffbdc; color: #383b41; --mode-muted: #9b9b91; --mode-border: #e6e2c9; --mode-selected: #36393e; }
+    .mode-line { height: 45px; display: flex; align-items: center; gap: 10px; white-space: nowrap; font-size: 12px; }
+    .mode-icon { width: 27px; height: 27px; border: 1px solid var(--mode-border); border-radius: 9px; display: grid; place-items: center; flex: 0 0 auto; font-size: 15px; line-height: 1; }
+    .mode-links { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+    .mode-links span { color: var(--mode-muted); }
+    .mode-links strong { position: relative; font-size: 15px; font-weight: 700; }
+    .mode-links strong::after { content: "✦"; position: absolute; right: -7px; top: -7px; font-size: 10px; color: #96a1ff; }
+    .mode-capsule { display: inline-flex; align-items: center; flex: 0 0 auto; border: 1px solid var(--mode-border); border-radius: 18px; color: var(--mode-muted); font-size: 11px; height: 27px; margin-left: auto; }
+    .mode-capsule span { padding: 4px 6px; }
+    .mode-capsule .chosen { border-radius: 15px; background: linear-gradient(#fff,#e7eaff); color: var(--mode-selected); font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.1); }
+    .mode-surface.light .mode-capsule .chosen { background: #fff; }
+
+    .notice { margin: 0 34px 20px; padding: 10px 14px; border: 1px solid var(--warning-line); background: var(--warning-bg); color: var(--warning-text); display: flex; align-items: flex-start; gap: 9px; }
+    .notice strong { font-weight: 600; }
+    .info-card { margin: 6px auto 0; max-width: 680px; padding: 16px 18px; border: 1px solid var(--line); background: #fafafa; color: #666; }
+    .info-card b { color: #444; }
+
+    .footer { position: fixed; left: 0; right: 0; bottom: 0; height: 76px; background: rgba(248,249,251,.96); border-top: 1px solid #eef0f3; display: flex; justify-content: center; align-items: center; gap: 16px; z-index: 20; backdrop-filter: blur(5px); }
+    .btn { min-width: 70px; height: 40px; padding: 0 18px; border: 1px solid #c9cfd6; background: #fff; color: #4b5158; }
+    .btn:hover { border-color: var(--blue); color: var(--blue); }
+    .btn.primary { color: #fff; background: var(--blue); border-color: var(--blue); }
+    .btn.primary:hover { background: var(--blue-hover); border-color: var(--blue-hover); color: #fff; }
+
+    .toast { position: fixed; top: 22px; left: 50%; transform: translate(-50%, -20px); padding: 10px 18px; border-radius: 2px; background: #fff; box-shadow: 0 3px 14px rgba(0,0,0,.18); opacity: 0; pointer-events: none; transition: .24s; z-index: 50; }
+    .toast.show { transform: translate(-50%, 0); opacity: 1; }
+    .toast.ok { border-left: 3px solid #52c41a; }
+    .toast.warn { border-left: 3px solid #faad14; }
+
+    .hidden { display: none !important; }
+    @media (max-width: 1100px) {
+      .row { grid-template-columns: 300px minmax(420px, 52%); }
+      .aside-note { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="breadcrumb"><span>皮肤管理</span><span>›</span><strong>新建皮肤</strong></div>
+    <div class="page-title"><button class="back" aria-label="返回">‹</button><span>新建皮肤</span></div>
+
+    <section class="panel">
+      <nav class="top-tabs" id="topTabs" aria-label="皮肤配置步骤">
+        <button class="tab" data-top="basic">基本信息</button>
+        <button class="tab" data-top="personal">个人版</button>
+        <button class="tab" data-top="corporate">法人版</button>
+        <button class="tab active" data-top="trial">尝鲜版</button>
+      </nav>
+      <div id="mainContent"></div>
+    </section>
+
+    <footer class="footer" id="footerActions"></footer>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+
+  <script>
+    (() => {
+      const topOrder = ['basic', 'personal', 'corporate', 'trial'];
+      const topNames = { basic: '基本信息', personal: '个人版', trial: '尝鲜版', corporate: '法人版' };
+      const versionConfig = {
+        personal: {
+          scopes: [
+            ['home', '首页'], ['affairs', '办事页'], ['life', '生活页'], ['mine', '我的页'], ['bottom', '底部导航栏']
+          ]
+        },
+        trial: {
+          scopes: [
+            ['smart', '智能页'], ['recommend', '推荐页'], ['service', '服务页'], ['profile', '个人中心']
+          ]
+        },
+        corporate: {
+          scopes: [
+            ['home', '首页'], ['affairs', '办事页'], ['discover', '发现页'], ['mine', '我的页'], ['bottom', '底部导航栏']
+          ]
+        }
+      };
+
+      const state = {
+        top: 'trial',
+        sub: { personal: 'home', trial: 'smart', corporate: 'home' },
+        headerMode: null,
+        colors: {},
+        uploads: {},
+        scopes: {
+          personal: new Set(['home', 'affairs', 'life', 'mine', 'bottom']),
+          trial: new Set(['smart', 'recommend', 'service', 'profile']),
+          corporate: new Set(['home', 'affairs', 'discover', 'mine', 'bottom'])
+        }
+      };
+
+      const main = document.getElementById('mainContent');
+      const topTabs = document.getElementById('topTabs');
+      const footer = document.getElementById('footerActions');
+      const toast = document.getElementById('toast');
+
+      const req = (text) => `<div class="label required">${text}：</div>`;
+      const opt = (text) => `<div class="label">${text}：</div>`;
+      const row = (label, control, aside = '') => `<div class="row">${label}<div class="control">${control}</div><div class="aside-note">${aside}</div></div>`;
+      const textInput = (key, placeholder = '请输入', extra = '') => `<input class="text-input" data-key="${key}" placeholder="${placeholder}" ${extra}>`;
+      const colorField = (key) => `
+        <div class="color-field">
+          <input class="text-input color-text" data-key="${key}" placeholder="请输入，如 #2F8CF4" maxlength="9">
+          <span class="color-dot" title="选择颜色"><input type="color" class="color-picker" value="#ffffff"><i></i></span>
+        </div>`;
+      const gradientPair = (prefix) => `
+        <div class="gradient-pair">
+          <div class="gradient-item"><div class="gradient-label">起始色</div>${colorField(`${prefix}-start`)}</div>
+          <div class="gradient-item"><div class="gradient-label">结束色</div>${colorField(`${prefix}-end`)}</div>
+        </div>`;
+      const radio = (key, labels) => `<div class="choices">${labels.map((x, i) => `<label class="radio"><input type="radio" name="${key}" value="${x}"><span class="radio-mark"></span><span>${x}</span></label>`).join('')}</div>`;
+      const checks = (key, labels) => `<div class="choices">${labels.map(x => `<label class="check"><input type="checkbox" name="${key}" value="${x}"><span class="check-mark"></span><span>${x}</span></label>`).join('')}</div>`;
+      const upload = (key, label = '上传图片', hint = '', accept = 'image/png,image/jpeg,image/webp,image/svg+xml,image/gif', maxKb = 200) => `
+        <div class="upload-wrap" data-upload-key="${key}" data-max-kb="${maxKb ?? ''}">
+          <div class="upload">
+            <img alt="本地预览">
+            <button class="upload-remove" type="button" title="移除">×</button>
+            <span class="upload-copy"><span class="plus">＋</span><span>${label}</span></span>
+            <input type="file" accept="${accept}" aria-label="${label}">
+          </div>
+          ${hint ? `<div class="hint">${hint}</div>` : ''}
+          <div class="upload-error"></div>
+        </div>`;
+      const uploadGrid = (prefix, names, hint) => `
+        <div class="upload-grid">${names.map((name, i) => upload(`${prefix}-${i}`, name, '', 'image/png,image/jpeg,image/webp,image/svg+xml,image/gif', 10)).join('')}</div>
+        <div class="hint">${hint}</div>`;
+
+      function headerModeDiagram() {
+        if (!state.headerMode) return '';
+        const mode = state.headerMode === '深色模式' ? 'dark' : 'light';
+        const caption = state.headerMode;
+        return `<div class="mode-diagram"><div class="mode-sample" data-mode-sample="${mode}">
+          <div class="mode-caption">${caption}</div>
+          <div class="mode-surface ${mode}" role="img" aria-label="${caption}导航与个人法人切换效果示意">
+            <div class="mode-line"><span class="mode-icon">▤</span><div class="mode-links"><strong>智能</strong><span>推荐</span></div></div>
+            <div class="mode-line"><span class="mode-icon">☰</span><div class="mode-links"><span>智能</span><strong>推荐</strong></div><div class="mode-capsule"><span class="chosen">个人</span><span>法人</span></div></div>
+            <div class="mode-line"><span class="mode-icon">☰</span><div class="mode-links"><span>智能</span><strong>推荐</strong></div><div class="mode-capsule"><span>个人</span><span class="chosen">法人</span></div></div>
+          </div>
+        </div></div>`;
+      }
+
+      function basicPage() {
+        return `<div class="main-section"><div class="form">
+          ${row(req('皮肤名称'), `${textInput('skin-name')}<div class="error">请输入皮肤名称</div>`)}
+          ${row(req('优先值'), `${textInput('priority', '数值越大，排序越靠前', 'type="number" min="0" max="999999"')}<div class="error">请输入 0–999999 的优先值</div>`)}
+          ${row(req('上线时间'), `${textInput('online', '请选择日期', 'type="date"')}<div class="error">请选择开始时间</div>`)}
+          ${row(req('下线时间'), `<div style="display:flex;align-items:center;gap:24px">${textInput('offline', '请选择日期', 'type="date"')}<label class="check" style="white-space:nowrap"><input id="longTerm" type="checkbox"><span class="check-mark"></span><span>长期有效</span></label></div><div class="error">请选择结束时间</div>`)}
+          ${row(req('发布平台'), `${checks('platform', ['微信小程序', 'App', '支付宝小程序'])}<div class="error">请至少选择一个发布平台</div>`)}
+        </div></div>`;
+      }
+
+      function commonEdition(version) {
+        const cfg = versionConfig[version];
+        const scopeButtons = cfg.scopes.map(([key, name]) => `<button class="scope ${state.scopes[version].has(key) ? 'selected' : ''}" data-scope="${key}">${name}</button>`).join('');
+        return `<div class="main-section edition-base"><div class="form">
+          ${row(req('皮肤预览'), upload(`${version}-preview`, '上传图片', '740*1600px,不超过200KB'))}
+          ${row(req('主题颜色'), colorField(`${version}-theme`))}
+          ${version === 'trial' ? `
+            ${row(req('头部模式'), `${radio('trial-header-mode', ['深色模式', '浅色模式'])}<div class="error">请选择深色或浅色模式</div>`)}
+            <div id="headerModePreview">${state.headerMode ? row(opt('示意图'), headerModeDiagram()) : ''}</div>` : ''}
+          ${row(req('皮肤范围'), `<div class="scope-list" data-version="${version}">${scopeButtons}</div><div class="error scope-error">请至少选择一个页面范围</div>`)}
+        </div></div>`;
+      }
+
+      function pageTabs(version) {
+        const cfg = versionConfig[version];
+        const enabled = cfg.scopes.filter(([key]) => state.scopes[version].has(key));
+        if (!enabled.length) return '';
+        if (!enabled.some(([key]) => key === state.sub[version])) state.sub[version] = enabled[0][0];
+        return `<section class="panel sub-panel">
+          <nav class="sub-tabs">${enabled.map(([key, name]) => `<button class="tab ${state.sub[version] === key ? 'active' : ''}" data-sub="${key}">${name}</button>`).join('')}</nav>
+          <div class="sub-content">${subPage(version, state.sub[version])}</div>
+        </section>`;
+      }
+
+      function jumpRows(prefix) {
+        return `${row(req('是否跳转'), radio(`${prefix}-jump`, ['跳转', '不跳转']))}
+          <div class="jump-dependent hidden" data-jump-for="${prefix}-jump">
+            ${row(req('跳转方式'), radio(`${prefix}-jump-type`, ['输入URL', '输入节点路径']))}
+            ${row(req('跳转地址'), textInput(`${prefix}-jump-value`, '请输入'))}
+          </div>`;
+      }
+
+      function personalPage(key) {
+        if (key === 'home') return `
+          ${row(req('头部背景'), upload('p-home-head', '上传图片', '750*624px,不超过200KB'))}
+          ${row(req('导航底色'), colorField('p-home-nav'))}
+          ${row(req('标题与天气组件文字颜色'), radio('p-home-title', ['黑色', '白色']))}
+          ${jumpRows('p-home')}`;
+        if (key === 'affairs') return `
+          ${row(req('头部背景'), upload('p-affairs-head', '上传图片', '750*240px,不超过200KB'))}
+          ${row(req('导航底色'), colorField('p-affairs-nav'))}
+          ${row(req('标题文字颜色'), radio('p-affairs-title', ['黑色', '白色']))}
+          ${row(req('注释文字颜色'), colorField('p-affairs-note'))}
+          ${jumpRows('p-affairs')}`;
+        if (key === 'life') return `
+          ${row(req('头部背景'), upload('p-life-head', '上传图片', '750*527px,不超过200KB'))}
+          ${row(req('导航底色'), colorField('p-life-nav'))}
+          ${row(req('标题文字颜色'), radio('p-life-title', ['黑色', '白色']))}
+          ${jumpRows('p-life')}`;
+        if (key === 'mine') return `
+          ${row(req('未登录背景图'), upload('p-mine-logout', '上传图片', '750*387px,不超过200KB'))}
+          ${row(req('已登录背景图'), upload('p-mine-login', '上传图片', '750*348px,不超过200KB'))}
+          ${row(req('导航底色'), colorField('p-mine-nav'))}
+          ${row(req('标题文字颜色'), radio('p-mine-title', ['黑色', '白色']))}
+          ${row(req('注释文字颜色'), colorField('p-mine-note'))}
+          ${row(opt('登录按钮'), upload('p-mine-btn', '上传图片', '240*98px,不超过200KB'))}`;
+        return `
+          ${row(req('选中状态'), uploadGrid('p-bottom-on', ['首页', '办事页', '生活页', '我的页'], '请注意填入顺序，图标尺寸72*72px，不超过10KB'))}
+          ${row(opt('选中文字颜色'), colorField('p-bottom-on-color'))}
+          ${row(opt('未选中状态'), uploadGrid('p-bottom-off', ['首页', '办事页', '生活页', '我的页'], '请注意填入顺序，图标尺寸72*72px，不超过10KB'))}
+          ${row(opt('未选中文字颜色'), colorField('p-bottom-off-color'))}`;
+      }
+
+      function trialPage(key) {
+        if (key === 'smart') return `
+          ${row(req('头部背景'), upload('t-smart-hero', '上传图片', '750*452px,不超过200KB'))}
+          ${row(req('粤仔'), upload('t-smart-yuezai', '上传图片', '300*348px,不超过200KB；支持GIF动态效果'))}
+          ${row(req('底部渐变叠层'), `${gradientPair('t-smart-mask')}<div class="error">请填写有效的起始色和结束色</div>`)}
+          ${row(req('输入框底图'), upload('t-smart-input-bg', '上传图片', '690*296px,不超过200KB'))}
+          ${row(req('页面底色'), colorField('t-smart-page-bg'))}`;
+        if (key === 'recommend') return `
+          ${row(req('头部渐变'), `${gradientPair('t-recommend-gradient')}<div class="error">请填写有效的起始色和结束色</div>`)}
+          ${row(req('页面底色'), colorField('t-recommend-page-bg'))}`;
+        if (key === 'service') return `
+          ${row(req('头部背景'), upload('t-service-head', '上传图片', '750*240px,不超过200KB'))}`;
+        if (key === 'profile') return `
+          ${row(opt('页面渐变色'), `${gradientPair('trial-profile-gradient')}<div class="hint">非必填；未配置时沿用个人中心默认背景样式</div>`)}`;
+        return '';
+      }
+
+      function corporatePage(key) {
+        if (key === 'home') return `
+          ${row(req('头部背景图'), upload('c-home-head', '上传图片', '750*624px,不超过200KB'))}
+          ${row(req('导航底色'), colorField('c-home-nav'))}
+          ${row(req('标题字体颜色、天气组件'), radio('c-home-title-weather', ['黑色', '白色']))}`;
+        if (key === 'affairs') return `
+          ${row(req('导航底色'), colorField('c-affairs-nav'))}
+          ${row(req('标题文字颜色'), radio('c-affairs-title', ['黑色', '白色']))}`;
+        if (key === 'discover') return `
+          ${row(req('头部渐变'), `<div style="display:grid;gap:14px">${colorField('c-discover-gradient-1')}${colorField('c-discover-gradient-2')}</div>`)}
+          ${row(req('导航底色'), colorField('c-discover-nav'))}
+          ${row(req('标题文字颜色'), radio('c-discover-title', ['黑色', '白色']))}`;
+        if (key === 'mine') return `
+          ${row(req('头部背景图'), upload('c-mine-head', '上传图片', '750*690px,不超过200KB'))}
+          ${row(req('导航底色'), colorField('c-mine-nav'))}
+          ${row(req('标题字体颜色'), radio('c-mine-title', ['黑色', '白色']))}
+          ${row(req('注释文字色'), colorField('c-mine-note'))}
+          ${row(opt('登录按钮'), upload('c-mine-btn', '上传图片', '150*60px,不超过200KB'))}`;
+        return `
+          ${row(req('选中状态'), uploadGrid('c-bottom-on', ['首页', '办事页', '发现页', '我的页'], '请注意填入顺序，图标尺寸72*72px，不超过10KB'))}
+          ${row(opt('选中文字颜色'), colorField('c-bottom-on-color'))}
+          ${row(opt('未选中状态'), uploadGrid('c-bottom-off', ['首页', '办事页', '发现页', '我的页'], '请注意填入顺序，图标尺寸72*72px，不超过10KB'))}
+          ${row(opt('未选中文字颜色'), colorField('c-bottom-off-color'))}`;
+      }
+
+      function subPage(version, key) {
+        const content = version === 'personal' ? personalPage(key) : version === 'trial' ? trialPage(key) : corporatePage(key);
+        return `<div class="form">${content}</div>`;
+      }
+
+      function editionPage(version) {
+        return `${commonEdition(version)}${pageTabs(version)}`;
+      }
+
+      function render() {
+        topTabs.querySelectorAll('.tab').forEach(btn => btn.classList.toggle('active', btn.dataset.top === state.top));
+        main.innerHTML = state.top === 'basic' ? basicPage() : editionPage(state.top);
+        renderFooter();
+        bindDynamic();
+      }
+
+      function renderFooter() {
+        const idx = topOrder.indexOf(state.top);
+        footer.innerHTML = `
+          <button class="btn" data-action="cancel">取消</button>
+          ${idx > 0 ? '<button class="btn primary" data-action="prev">上一步</button>' : ''}
+          ${idx < topOrder.length - 1 ? '<button class="btn primary" data-action="next">下一步</button>' : '<button class="btn primary" data-action="save">保存</button>'}`;
+      }
+
+      function bindDynamic() {
+        main.querySelectorAll('[data-sub]').forEach(btn => btn.addEventListener('click', () => {
+          state.sub[state.top] = btn.dataset.sub;
+          render();
+        }));
+        main.querySelectorAll('[data-scope]').forEach(btn => btn.addEventListener('click', () => {
+          const set = state.scopes[state.top];
+          const key = btn.dataset.scope;
+          if (set.has(key)) set.delete(key); else set.add(key);
+          render();
+        }));
+
+        main.querySelectorAll('input[name="trial-header-mode"]').forEach(input => {
+          input.checked = state.headerMode === input.value;
+          input.addEventListener('change', () => {
+            state.headerMode = input.value;
+            input.closest('.row').classList.remove('invalid');
+            main.querySelector('#headerModePreview').innerHTML = row(opt('示意图'), headerModeDiagram());
+          });
+        });
+
+        main.querySelectorAll('.color-field').forEach(field => {
+          const text = field.querySelector('.color-text');
+          const picker = field.querySelector('.color-picker');
+          const dot = field.querySelector('.color-dot');
+          const apply = (value) => {
+            if (/^#[0-9a-f]{6}$/i.test(value)) {
+              dot.style.background = value;
+              picker.value = value;
+              text.style.borderColor = '#cfd5dd';
+            } else if (value) text.style.borderColor = '#f5222d';
+            else { dot.style.background = '#fff'; text.style.borderColor = '#cfd5dd'; }
+          };
+          if (state.colors[text.dataset.key]) {
+            text.value = state.colors[text.dataset.key];
+            apply(text.value.trim());
+          }
+          text.addEventListener('input', () => {
+            state.colors[text.dataset.key] = text.value.trim();
+            apply(state.colors[text.dataset.key]);
+            if (/^#[0-9a-f]{6}$/i.test(state.colors[text.dataset.key]) &&
+                [...text.closest('.gradient-pair')?.querySelectorAll('.color-text') || []].every(input => /^#[0-9a-f]{6}$/i.test(input.value.trim()))) {
+              text.closest('.row')?.classList.remove('invalid');
+            }
+          });
+          picker.addEventListener('input', () => {
+            text.value = picker.value.toUpperCase();
+            state.colors[text.dataset.key] = text.value;
+            apply(text.value);
+            if (text.closest('.gradient-pair') &&
+                [...text.closest('.gradient-pair').querySelectorAll('.color-text')].every(input => /^#[0-9a-f]{6}$/i.test(input.value.trim()))) {
+              text.closest('.row')?.classList.remove('invalid');
+            }
+          });
+        });
+
+        main.querySelectorAll('.upload-wrap').forEach(wrap => {
+          const key = wrap.dataset.uploadKey;
+          const box = wrap.querySelector('.upload');
+          const input = wrap.querySelector('input[type="file"]');
+          const img = wrap.querySelector('img');
+          const remove = wrap.querySelector('.upload-remove');
+          const err = wrap.querySelector('.upload-error');
+          if (state.uploads[key]) {
+            img.src = state.uploads[key].data;
+            box.classList.add('has-image');
+          }
+          input.addEventListener('change', () => {
+            const file = input.files && input.files[0];
+            if (!file) return;
+            const maxKb = wrap.dataset.maxKb ? Number(wrap.dataset.maxKb) : null;
+            err.textContent = maxKb && file.size > maxKb * 1024 ? `文件为 ${(file.size / 1024).toFixed(1)}KB，超过 ${maxKb}KB 限制（原型仍保留本地预览）` : '';
+            const reader = new FileReader();
+            reader.onload = e => {
+              state.uploads[key] = { data: e.target.result, name: file.name };
+              img.src = e.target.result;
+              box.classList.add('has-image');
+              box.style.borderColor = '';
+            };
+            reader.readAsDataURL(file);
+          });
+          remove.addEventListener('click', e => {
+            e.preventDefault(); e.stopPropagation(); delete state.uploads[key]; input.value = ''; img.removeAttribute('src'); box.classList.remove('has-image'); err.textContent = '';
+          });
+        });
+
+        main.querySelectorAll('input[type="radio"][name$="-jump"]').forEach(input => input.addEventListener('change', () => {
+          const dep = main.querySelector(`[data-jump-for="${input.name}"]`);
+          if (dep) dep.classList.toggle('hidden', input.value !== '跳转' || !input.checked);
+        }));
+
+        const longTerm = document.getElementById('longTerm');
+        if (longTerm) longTerm.addEventListener('change', () => {
+          const offline = main.querySelector('[data-key="offline"]');
+          offline.disabled = longTerm.checked;
+          offline.style.background = longTerm.checked ? '#f5f5f5' : '#fff';
+          if (longTerm.checked) offline.value = '';
+        });
+      }
+
+      function showToast(message, type = 'ok') {
+        toast.textContent = message;
+        toast.className = `toast ${type} show`;
+        clearTimeout(showToast.timer);
+        showToast.timer = setTimeout(() => toast.classList.remove('show'), 2400);
+      }
+
+      function validateBasic() {
+        let ok = true;
+        ['skin-name', 'priority', 'online'].forEach(key => {
+          const input = main.querySelector(`[data-key="${key}"]`);
+          if (!input || !input.value.trim()) { input?.closest('.row').classList.add('invalid'); ok = false; }
+        });
+        const longTerm = document.getElementById('longTerm');
+        const offline = main.querySelector('[data-key="offline"]');
+        if (!longTerm?.checked && !offline?.value) { offline?.closest('.row').classList.add('invalid'); ok = false; }
+        const platforms = main.querySelectorAll('input[name="platform"]:checked');
+        if (!platforms.length) { main.querySelector('input[name="platform"]')?.closest('.row').classList.add('invalid'); ok = false; }
+        return ok;
+      }
+
+      function validateTrialHeaderMode() {
+        if (state.headerMode) return true;
+        state.top = 'trial';
+        render();
+        const row = main.querySelector('input[name="trial-header-mode"]').closest('.row');
+        row.classList.add('invalid');
+        row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        showToast('请选择头部模式', 'warn');
+        return false;
+      }
+
+      function validateTrialGradients() {
+        for (const [scope, prefix, label] of [
+          ['smart', 't-smart-mask', '智能页底部渐变叠层'],
+          ['recommend', 't-recommend-gradient', '推荐页头部渐变']
+        ]) {
+          if (!state.scopes.trial.has(scope)) continue;
+          if (['start', 'end'].every(part => /^#[0-9a-f]{6}$/i.test(state.colors[`${prefix}-${part}`] || ''))) continue;
+          state.top = 'trial';
+          state.sub.trial = scope;
+          render();
+          const row = main.querySelector(`[data-key="${prefix}-start"]`).closest('.row');
+          row.classList.add('invalid');
+          row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          showToast(`请填写${label}的起始色和结束色`, 'warn');
+          return false;
+        }
+        return true;
+      }
+
+      function goTo(top) {
+        state.top = top;
+        render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      topTabs.addEventListener('click', e => {
+        const btn = e.target.closest('[data-top]');
+        if (btn) goTo(btn.dataset.top);
+      });
+      footer.addEventListener('click', e => {
+        const action = e.target.dataset.action;
+        if (!action) return;
+        const idx = topOrder.indexOf(state.top);
+        if (action === 'cancel') return showToast('已取消本次操作（演示页面不会关闭）', 'warn');
+        if (action === 'prev') return goTo(topOrder[idx - 1]);
+        if (action === 'next') {
+          if (state.top === 'basic' && !validateBasic()) return showToast('请先完善必填信息', 'warn');
+          if (state.top === 'trial' && (!validateTrialGradients() || !validateTrialHeaderMode())) return;
+          return goTo(topOrder[idx + 1]);
+        }
+        if (action === 'save') {
+          if (!validateTrialGradients() || !validateTrialHeaderMode()) return;
+          showToast('保存成功（纯前端演示，不会提交到服务器）');
+        }
+      });
+      document.querySelector('.back').addEventListener('click', () => showToast('返回皮肤管理（纯前端演示）', 'warn'));
+
+      render();
+    })();
+  </script>
+</body>
+</html>

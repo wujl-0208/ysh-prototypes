@@ -1,6 +1,14 @@
 {
-  "updated": "2026-09-20",
+  "updated": "2026-09-21",
   "prototypes": [
+    {
+      "dir": "prototypes/skin-config-trial",
+      "title": "粤省事运营后台增尝鲜模式皮肤配置",
+      "desc": "运营后台「新建皮肤」表单：基本信息 + 个人版 / 法人版 / 尝鲜版分区配置皮肤范围、图片与颜色。",
+      "tags": ["运营后台", "皮肤", "表单"],
+      "date": "2026-09-21",
+      "status": "review"
+    },
     {
       "dir": "prototypes/_template",
       "title": "原型模板",
