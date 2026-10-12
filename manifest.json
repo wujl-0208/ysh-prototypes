@@ -1,12 +1,40 @@
 {
-  "updated": "2026-09-21",
+  "updated": "2026-10-12",
   "prototypes": [
     {
       "dir": "prototypes/skin-config-trial",
       "title": "粤省事运营后台增尝鲜模式皮肤配置",
       "desc": "运营后台「新建皮肤」表单：基本信息 + 个人版 / 法人版 / 尝鲜版分区配置皮肤范围、图片与颜色。",
-      "tags": ["运营后台", "皮肤", "表单"],
+      "tags": [
+        "运营后台",
+        "皮肤",
+        "表单"
+      ],
       "date": "2026-09-21",
+      "status": "review"
+    },
+    {
+      "dir": "prototypes/splash-ad-config-v1",
+      "title": "App 开屏广告配置 · V1",
+      "desc": "第一版归档：单图与双图配置、两张图片独立跳转、单次播放及手机效果预览。",
+      "tags": [
+        "运营后台",
+        "开屏广告",
+        "V1"
+      ],
+      "date": "2026-10-12",
+      "status": "archived"
+    },
+    {
+      "dir": "prototypes/splash-ad-config-v2",
+      "title": "App 开屏广告配置 · V2",
+      "desc": "按现有后台布局优化：发布设置与范围选择两大标签，支持双图独立链接、切换动画和单图兼容。",
+      "tags": [
+        "运营后台",
+        "开屏广告",
+        "V2"
+      ],
+      "date": "2026-10-12",
       "status": "review"
     }
   ]
