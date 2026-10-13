@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-12",
+  "updated": "2026-10-13",
   "prototypes": [
     {
       "dir": "prototypes/skin-config-trial",
@@ -28,14 +28,14 @@
     {
       "dir": "prototypes/splash-ad-config-v2",
       "title": "App 开屏广告配置 · V2",
-      "desc": "按现有后台布局优化：发布设置与范围选择两大标签，支持双图独立链接、切换动画和单图兼容。",
+      "desc": "App 开屏两张图片独立跳转，双图平分总倒计时、固定左滑；补齐发布时间与展示位置，支持单图兼容。",
       "tags": [
         "运营后台",
         "开屏广告",
         "V2"
       ],
-      "date": "2026-10-12",
-      "status": "review"
+      "date": "2026-10-13",
+      "status": "final"
     }
   ]
 }
