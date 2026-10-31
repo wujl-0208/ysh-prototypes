@@ -1,6 +1,19 @@
 {
-  "updated": "2026-10-13",
+  "updated": "2026-10-31",
   "prototypes": [
+    {
+      "dir": "prototypes/global-login-mgmt",
+      "title": "全局登录管理（刷脸认证配置改版）",
+      "desc": "后台「全局登录管理」列表改版：个人版/法人版 Tab + App/微信小程序/支付宝小程序二级渠道，隐藏认证描述与默认选中，新增展示区域与认证动作（来源/动作两级联动）。",
+      "tags": [
+        "运营后台",
+        "登录认证",
+        "刷脸认证",
+        "列表改版"
+      ],
+      "date": "2026-10-31",
+      "status": "review"
+    },
     {
       "dir": "prototypes/skin-config-trial",
       "title": "粤省事运营后台增尝鲜模式皮肤配置",
