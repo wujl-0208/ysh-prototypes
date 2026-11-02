@@ -217,7 +217,7 @@
   .casc-item .arw{color:#C0C4CC;font-size:12px;margin-left:10px}
   .casc-item.on .arw{color:#79BBFF}
 
-  /* 底色设置：仅重点区域显示 */
+  /* 底色设置：独立字段，始终显示 */
   .color-set{display:flex;flex-direction:column;gap:10px;width:100%;max-width:470px}
   .color-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
   .swatches{display:flex;align-items:center;gap:8px}
@@ -435,15 +435,15 @@
             </div>
           </div>
 
-          <div class="fitem" data-name="底色设置" id="fiColor" style="display:none">
-            <div class="lbl">底色设置：</div>
+          <div class="fitem" data-name="底色设置" id="fiColor">
+            <div class="lbl"><span class="req">*</span>底色设置：</div>
             <div class="ctrl">
               <div class="color-set">
                 <div class="color-row">
                   <div class="swatches" id="swatches"></div>
                   <span class="color-sep"></span>
-                  <input type="color" class="color-pick" id="fColorPick" value="#1677FF" />
-                  <input class="inp color-hex" id="fColorHex" value="#1677FF" maxlength="7" spellcheck="false" />
+                  <input type="color" class="color-pick" id="fColorPick" value="#909399" />
+                  <input class="inp color-hex" id="fColorHex" value="#909399" maxlength="7" spellcheck="false" />
                   <span class="color-hint">自定义</span>
                 </div>
               </div>
@@ -640,7 +640,6 @@
     document.querySelectorAll('#formInner input[type=radio],#formInner input[type=checkbox]').forEach(function(i){ i.checked = false; });
     document.querySelectorAll('.fitem').forEach(function(f){ f.classList.remove('err'); });
     paintColor(DEFAULT_COLOR);
-    syncColorByZone();
   }
 
   function openPage(m, name){
@@ -655,7 +654,7 @@
       $('crumbCur').textContent = '新增';
       document.querySelector('#fType input[value="'+curV+'"]').checked = true;
       document.querySelector('#fChannel input[value="'+curC+'"]').checked = true;
-      paintColor(curC === 'wx' ? '#07C160' : DEFAULT_COLOR);
+      paintColor(DEFAULT_COLOR);
     } else {
       $('addTitle').textContent = '编辑';
       $('crumbCur').textContent = '编辑';
@@ -682,7 +681,6 @@
         if (fc) fc.checked = true;
       }
     }
-    syncColorByZone();
   }
 
   function backToList(){
@@ -733,12 +731,13 @@
     showToast('已提交发布申请：' + $('fName').value.trim());
   });
 
-  /* ---------- 底色设置：仅重点区域可见 ---------- */
+  /* ---------- 底色设置：独立字段，不随展示区域显隐 ---------- */
   var SWATCHES = [
+    { name:'灰色', color:'#909399' },
     { name:'微信', color:'#07C160' },
     { name:'支付宝', color:'#1677FF' }
   ];
-  var DEFAULT_COLOR = '#1677FF';
+  var DEFAULT_COLOR = '#909399';
 
   function isHex(v){ return /^#[0-9a-fA-F]{6}$/.test(v); }
 
@@ -756,13 +755,6 @@
     return '<button type="button" class="sw" data-c="' + s.color + '" title="' + s.name + ' ' + s.color +
            '" style="background:' + s.color + '"></button>';
   }).join('');
-
-  function syncColorByZone(){
-    var z = document.querySelector('#fZone input:checked');
-    var on = !!z && z.value === 'key';
-    $('fiColor').style.display = on ? '' : 'none';
-    if (on && !isHex($('fColorHex').value)) paintColor(DEFAULT_COLOR);
-  }
 
   $('swatches').addEventListener('click', function(e){
     var b = e.target.closest('.sw');
@@ -786,9 +778,7 @@
     paintColor(this.value);
   });
 
-  document.querySelectorAll('#fZone input').forEach(function(r){
-    r.addEventListener('change', syncColorByZone);
-  });
+  /* 底色已与展示区域解耦，不再监听 #fZone */
 
   /* ---------- 认证动作：两级联动选择 ---------- */
   var ACTION_TREE = [
